@@ -1,4 +1,10 @@
-import { UserInputDTO, LoginInputDTO } from '../model/User';
+import {
+  UserInputDTO,
+  LoginInputDTO,
+  UserRole,
+  stringToRole,
+  UserSchema,
+} from '../model/User';
 import { UserDatabase } from '../data/UserDatabase';
 import { HashManager } from '../services/HashManager';
 import { Authenticator } from '../services/Authenticator';
@@ -9,8 +15,33 @@ export class UserBusiness {
     if (!user.username || !user.password || !user.role) {
       throw new Error('Username,password and role are mandatory fields');
     }
-    await userDatabase.createUser(user.username, user.password, user.role);
+
+    const newUser = await userDatabase.createUser(
+      user.username,
+      user.password,
+      user.role
+    );
+
+    return newUser;
   }
 
-  async getUserByEmail(user: LoginInputDTO) {}
+  async getUserByUsername(user: LoginInputDTO) {
+    const userDatabase = new UserDatabase();
+    const userFromDb = await userDatabase.getUserByUsername(user.username);
+
+    const hashManager = new HashManager();
+    const hashCompare = await hashManager.compare(
+      user.password,
+      userFromDb.password
+    );
+
+    const authenticator = new Authenticator();
+    const token = authenticator.generateToken(userFromDb.role);
+
+    if (!hashCompare) {
+      throw new Error('Invalid Password!');
+    }
+
+    return token;
+  }
 }
