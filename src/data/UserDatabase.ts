@@ -10,9 +10,9 @@ export class UserDatabase extends BaseDatabase {
     try {
       await this.getConnection();
       new UserModel({
-        username: username,
-        password: password,
-        role: role,
+        username,
+        password,
+        role,
       }).save();
     } catch (error) {
       throw new Error(error.message);

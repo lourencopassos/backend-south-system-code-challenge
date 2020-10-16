@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import joi from 'joi';
 import { HashManager } from '../services/HashManager';
 
 export enum UserRole {
@@ -32,7 +31,7 @@ export interface UserInputDTO {
 }
 
 export interface LoginInputDTO {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -43,7 +42,7 @@ export const stringToRole = (input: string) => {
     case 'manager':
       return UserRole.MANAGER;
     default:
-      throw new Error('Invalid Role');
+      throw new Error('Invalid role');
   }
 };
 
@@ -58,4 +57,4 @@ UserSchema.pre<UserInputDTO & Document>('save', async function (next) {
   next();
 });
 
-export const UserModel = mongoose.model('Users', UserSchema);
+export const UserModel = mongoose.model('users', UserSchema);

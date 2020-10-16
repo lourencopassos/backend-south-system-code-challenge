@@ -1,14 +1,14 @@
 import * as jwt from 'jsonwebtoken';
+import { UserRole } from '../model/User';
 
 export class Authenticator {
   public generateToken(
-    input: AuthenticationData,
+    input: UserRole,
     expiresIn: string = process.env.ACCESS_TOKEN_EXPIRES_IN!
   ): string {
     const token = jwt.sign(
       {
-        id: input.id,
-        role: input.role,
+        role: input,
       },
       process.env.JWT_KEY as string,
       {
@@ -21,14 +21,12 @@ export class Authenticator {
   public getData(token: string): AuthenticationData {
     const payload = jwt.verify(token, process.env.JWT_KEY as string) as any;
     const result = {
-      id: payload.id,
       role: payload.role,
     };
     return result;
   }
 }
 
-interface AuthenticationData {
-  id: string;
-  role?: string;
+export interface AuthenticationData {
+  role: UserRole;
 }
