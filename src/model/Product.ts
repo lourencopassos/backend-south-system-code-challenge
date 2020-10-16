@@ -1,4 +1,3 @@
-import { number } from 'joi';
 import mongoose, { Schema, Document } from 'mongoose';
 
 export enum ProductCategory {
@@ -21,7 +20,7 @@ export const ProductSchema = new Schema({
     required: 'Product category required',
   },
   price: {
-    type: number,
+    type: Number,
     required: 'Price required',
     get: getPrice,
     set: setPrice,

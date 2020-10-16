@@ -21,7 +21,7 @@ export class UserDatabase extends BaseDatabase {
 
   public async getUserByUsername(username: string): Promise<any> {
     await this.getConnection();
-    const result = await UserModel.findOne({ username });
+    const result = await UserModel.findOne({ username }).exec();
     return result;
   }
 }
