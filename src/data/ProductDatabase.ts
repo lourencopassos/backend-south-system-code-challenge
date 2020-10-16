@@ -8,7 +8,7 @@ export class ProductDatabase extends BaseDatabase {
     price: number
   ) => {
     try {
-      await this.getConnection();
+      const newProduct = await this.getConnection();
       new ProductModel({
         name,
         category,

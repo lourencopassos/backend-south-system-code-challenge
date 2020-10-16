@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export enum ProductCategory {
-  ELETRONIC = 'eletronic',
+  ELECTRONIC = 'electronic',
   APPAREL = 'apparel',
   TOY = 'toy',
 }
@@ -37,8 +37,8 @@ function setPrice(number: number) {
 
 export const stringToCategory = (input: string) => {
   switch (input) {
-    case 'eletronic':
-      return ProductCategory.ELETRONIC;
+    case 'electronic':
+      return ProductCategory.ELECTRONIC;
     case 'apparel':
       return ProductCategory.APPAREL;
     case 'toy':
