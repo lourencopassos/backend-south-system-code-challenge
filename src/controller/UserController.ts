@@ -7,6 +7,7 @@ import {
 } from '../model/User';
 import { UserBusiness } from '../business/UserBusiness';
 import { Authenticator } from '../services/Authenticator';
+import { UserDatabase } from '../data/UserDatabase';
 
 export class UserController {
   async signup(req: Request, res: Response) {
@@ -17,21 +18,25 @@ export class UserController {
         role: req.body.role,
       };
 
-      const { username } = req.body;
+      const userDatabase = new UserDatabase();
+      const db = userDatabase.getConnection();
+
+      const userExists = await UserModel.findOne({
+        username: req.body.username,
+      }).exec();
+
+      if (userExists) {
+        return res.status(400).send('Username already choosen  ');
+      }
 
       const userBusiness = new UserBusiness();
       const newUser = await userBusiness.createUser(input);
 
       const authenticator = new Authenticator();
       const token = authenticator.generateToken(input.role as UserRole);
-
-      if (await UserModel.findOne({ username })) {
-        return res.status(400).send('Username already choosen  ');
-      }
-
       res.status(201).send({ token });
     } catch (error) {
-      res.status(500).send({ error: error.message });
+      res.status(400).send({ error: error.message });
     }
   }
 
@@ -41,9 +46,13 @@ export class UserController {
         username: req.body.username,
         password: req.body.password,
       };
-      const { username } = req.body;
 
-      const user = await UserModel.findOne({ username });
+      const userDatabase = new UserDatabase();
+      const db = userDatabase.getConnection();
+
+      const user = await UserModel.findOne({
+        username: req.body.username,
+      }).exec();
 
       if (!user) {
         return res.status(404).send("User doesn't exist");

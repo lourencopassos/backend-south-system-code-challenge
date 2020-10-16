@@ -1,7 +1,7 @@
 import mongoose, { Connection, connection, Mongoose } from 'mongoose';
 
 export abstract class BaseDatabase {
-  protected getConnection = async (): Promise<Connection> => {
+  public getConnection = async (): Promise<Connection> => {
     await mongoose.connect(`${process.env.DB}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,

@@ -16,6 +16,10 @@ export class UserBusiness {
       throw new Error('Username,password and role are mandatory fields');
     }
 
+    if (user.role !== UserRole.CLIENT && user.role !== UserRole.MANAGER) {
+      throw new Error('Invalid Role. Roles supported: client or manager');
+    }
+
     const newUser = await userDatabase.createUser(
       user.username,
       user.password,
