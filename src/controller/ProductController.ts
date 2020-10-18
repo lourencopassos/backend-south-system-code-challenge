@@ -153,6 +153,14 @@ export class ProductController {
         );
       }
 
+      if (req.body.quantity) {
+        const productBusiness = new ProductBusiness();
+        await productBusiness.updateProductQuantity(
+          req.body.quantity,
+          productToUpdateId
+        );
+      }
+
       res.status(200).send('Product update sucess');
     } catch (error) {
       res.status(400).send({ error: error.message });
@@ -222,6 +230,8 @@ export class ProductController {
     try {
       const authenticator = new Authenticator();
       const token = req.headers.authorization;
+      const limit = Number(req.query.limit);
+      const skip = Number(req.query.skip);
 
       const productName = req.query.name as string;
 
@@ -240,7 +250,11 @@ export class ProductController {
       }
 
       const productBusiness = new ProductBusiness();
-      const product = await productBusiness.getProductByName(productName);
+      const product = await productBusiness.getProductByName(
+        productName,
+        limit,
+        skip
+      );
       res.status(200).send(product);
     } catch (error) {
       res.status(400).send({ error: error.message });

@@ -51,6 +51,15 @@ export class ProductDatabase extends BaseDatabase {
     }
   };
 
+  public editProductQuantity = async (quantity: number, id: string) => {
+    try {
+      await this.getConnection();
+      await ProductModel.findByIdAndUpdate(id, { quantity: quantity }).exec();
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
   public getAllProducts = async (skip: number, limit: number) => {
     try {
       await this.getConnection();
@@ -78,12 +87,19 @@ export class ProductDatabase extends BaseDatabase {
     }
   };
 
-  public getProductByName = async (productName: string) => {
+  public getProductByName = async (
+    productName: string,
+    limit: number,
+    skip: number
+  ) => {
     try {
       await this.getConnection();
       const product = await ProductModel.find({
         name: { $regex: `${productName}` },
-      }).exec();
+      })
+        .skip(skip)
+        .limit(limit)
+        .exec();
 
       return product;
     } catch (error) {
