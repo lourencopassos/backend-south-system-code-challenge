@@ -116,10 +116,138 @@ Exemplo de requisição:
     "quantity": 10
 }
 ```
+- **Deletar Produto** 
+
+**`DELETE /product/delete/:id`** A rota recebe via _path variable_ o `id` do produto que será deletado. Há verificação do tipo de perfil de quem está executando a ação de remoção do produto, se há token válido e se o produto que será deletado existe. 
+
+- **Atualizar Produto**
+
+**`PUT /product/edit/:id`** A rota recebe em seu corpo até três informações que podem ser atualizadas (as mesmas da criação do produto). O `id`do product que será editado é recebido via  _path variable_. Não é necessário colocar todas informações na requisição. Por exemplo, se há intenção de atualizar apenas o `name` do produto, não é necessário colocar a `category` do mesmo. Para melhor organização da API, a edição de cada informação do produto é tratada por um serviço independente na camada `business`. Dessa forma, as linhas extras de código no backend poupadas no frontend e mobile pela flexibilidade que gera, além de contribuir para uma UI mais fluida.
 
 
+Exemplo de requisição: 
+
+```
+{
+    "name": "iphone 13",
+    "category": "toy",
+}
+```
+
+- **Buscar todos Produtos**
+
+**`GET /product/all/?limit= &skip= `** A rota recebe através do _query params_ o limite de produtos que serão buscados e a partir de qual através de `limit` e `skip` respectivamente para gerar a paginação. Esta rota busca todos produtos, inclusive os que não estão disponívels. (`quantity` igual a zero). Há verificação de token e `role` para realizar esta busca. 
 
 
+Exemplo de resposta: 
+
+```
+{
+    "products": [
+        {
+            "_id": "5f89b184e3ae302e58e9758c",
+            "name": "iphone",
+            "category": "electronic",
+            "price": 20000,
+            "quantity": 0
+            "__v": 0
+        },
+        {
+            "_id": "5f89b1bf5a559825647afab6",
+            "name": "samsung",
+            "category": "electronic",
+            "price": 20000,
+            "quantity": 10
+            "__v": 0
+        }
+    ],
+    "total": 2
+}
+```
+- **Buscar todos Produtos Disponíveis**
+
+**`GET /product/all/?limit= &skip= `** A rota recebe através do _query params_ o limite de produtos que serão buscados e a partir de qual através de `limit` e `skip` respectivamente para gerar a paginação. Esta rota busca todos produtos disponíveis (`quantity` maior ou igual a um). Há verificação de token e `role` para realizar esta busca. 
+
+
+```
+{
+    "products": [
+        {
+            "quantity": 2,
+            "_id": "5f8b6cc688c7edaaf4aa76b1",
+            "name": "pula pirata",
+            "category": "toy",
+            "price": 20060,
+            "__v": 0
+        },
+        {
+            "quantity": 10,
+            "_id": "5f8b9aa462b0196ffca90052",
+            "name": "barbie girl",
+            "category": "toy",
+            "price": 20060,
+            "__v": 0
+        }
+    ],
+    "total": 2
+}
+```
+
+- **Busca de produto por nome**
+
+**`GET /product/filter/?name= &limit= &skip= `** A rota recebe através do _query params_ o nome do produto que está buscando, o limite de produtos que serão buscados e a partir de qual através de `limit` e `skip` respectivamente para gerar a paginação. Há verificação de token e `role` para realizar esta busca.
+
+**Termo de busca: iPhone**
+
+Exemplo de Resposta: 
+
+```
+[
+    {
+        "quantity": 10,
+        "_id": "5f8b9acb62b0196ffca90053",
+        "name": "iphone 12",
+        "category": "electronic",
+        "price": 10500,
+        "__v": 0
+    },
+    {
+        "quantity": 10,
+        "_id": "5f8bc673dc4aa6b56412b504",
+        "name": "iphone 14",
+        "category": "electronic",
+        "price": 10500,
+        "__v": 0
+    },
+    {
+        "quantity": 200,
+        "_id": "5f8bc6f4d1ae7aad948f0d39",
+        "name": "iphone 15",
+        "category": "electronic",
+        "price": 10500,
+        "__v": 0
+    }
+]
+```
+
+- **Visualização de produto pelo cliente**
+
+**`GET /product/detail/:id`**  A rota recebe através do _path variable_ o id do produto que está buscando para visualizar os detalhes do mesmo. Há verificação de token e `role` (apenas o cliente) para realizar esta busca.
+
+```
+[
+    {
+        "quantity": 10,
+        "_id": "5f8b9acb62b0196ffca90053",
+        "name": "iphone 12",
+        "category": "electronic",
+        "price": 10500,
+        "__v": 0
+    }
+```
+#### 👋🏽 Contato
+
+Lourenço Passos | Desenvolvedor Web Fullstack | lo.passos93@gmail.com | 51-996106010
 
 
 
