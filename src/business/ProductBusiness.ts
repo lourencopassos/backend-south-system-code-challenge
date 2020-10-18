@@ -19,6 +19,14 @@ export class ProductBusiness {
       throw new Error('Product name,price and category are mandatory fields');
     }
 
+    if (isNaN(product.price)) {
+      throw new Error('Price and category must be numbers');
+    }
+
+    if (isNaN(product.quantity)) {
+      throw new Error('Price and category must be numbers');
+    }
+
     if (product.name.length < 2) {
       throw new Error('Product name,price and category are mandatory fields');
     }
@@ -65,6 +73,11 @@ export class ProductBusiness {
     await productDatabase.editProductPrice(price, id);
   }
 
+  async updateProductQuantity(quantity: number, id: string) {
+    const productDatabase = new ProductDatabase();
+    await productDatabase.editProductQuantity(quantity, id);
+  }
+
   async getAllProducts(skip: number, limit: number) {
     const productDatabase = new ProductDatabase();
     const products = await productDatabase.getAllProducts(skip, limit);
@@ -77,12 +90,12 @@ export class ProductBusiness {
     return products;
   }
 
-  async getProductByName(name: string) {
+  async getProductByName(name: string, limit: number, skip: number) {
     if (!name) {
       throw new Error('Check product name');
     }
     const productDatabase = new ProductDatabase();
-    const product = await productDatabase.getProductByName(name);
+    const product = await productDatabase.getProductByName(name, limit, skip);
     return product;
   }
 

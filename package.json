@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node ./src/index.ts"
+    "local": "ts-node ./src/index.ts",
+    "start": "tsc && node ./build/index.js",
+    "build": "tsc"
   },
   "keywords": [
     "api",
@@ -18,8 +20,8 @@
     "@types/express": "^4.17.7",
     "@types/jest": "^25.2.3",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/knex": "^0.16.1",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jest": "^26.0.1",
@@ -32,6 +34,7 @@
     "typescript": "^3.9.6"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.8",
     "@types/joi": "^14.3.4",
     "@types/mongoose": "^5.7.36",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
