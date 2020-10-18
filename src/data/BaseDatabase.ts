@@ -18,8 +18,4 @@ export abstract class BaseDatabase {
 
     return db;
   };
-
-  public static async destroyConnection(): Promise<void> {
-    await mongoose.connection.close();
-  }
 }

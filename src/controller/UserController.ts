@@ -61,9 +61,9 @@ export class UserController {
       const userBusiness = new UserBusiness();
       const token = await userBusiness.getUserByUsername(loginData);
 
-      res.status(202).send({ token });
+      res.status(200).send({ token });
     } catch (error) {
-      res.status(400).send({ error: error.message });
+      res.status(401).send({ error: error.message });
     }
   }
 }
