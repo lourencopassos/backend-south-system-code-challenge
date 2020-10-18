@@ -12,6 +12,7 @@ export const ProductSchema = new Schema({
     unique: true,
     required: 'Product name required',
     lowercase: true,
+    min: 3,
   },
 
   category: {
@@ -24,6 +25,13 @@ export const ProductSchema = new Schema({
     required: 'Price required',
     get: getPrice,
     set: setPrice,
+    min: 1,
+  },
+  quantity: {
+    type: Number,
+    required: 'Quantity required',
+    default: 1,
+    min: 0,
   },
 });
 
@@ -52,6 +60,14 @@ export interface ProductInputDTO {
   name: string;
   price: number;
   category: ProductCategory;
+  quantity: number;
 }
 
 export const ProductModel = mongoose.model('products', ProductSchema);
+
+export interface ProductEditDTO {
+  name?: string;
+  price?: number;
+  category?: ProductCategory;
+  quantity?: number;
+}
