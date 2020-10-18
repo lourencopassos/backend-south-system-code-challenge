@@ -25,13 +25,10 @@ export const ProductSchema = new Schema({
     required: 'Price required',
     get: getPrice,
     set: setPrice,
-    min: 1,
   },
   quantity: {
     type: Number,
     required: 'Quantity required',
-    default: 1,
-    min: 0,
   },
 });
 

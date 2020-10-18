@@ -4,7 +4,7 @@
   "description": "Template para o projeto LAMA",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "local": "ts-node ./src/index.ts",
     "start": "tsc && node ./build/index.js",
     "build": "tsc"
