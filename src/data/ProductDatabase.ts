@@ -90,4 +90,14 @@ export class ProductDatabase extends BaseDatabase {
       throw new Error(error.message);
     }
   };
+
+  public getProductById = async (id: string) => {
+    try {
+      await this.getConnection();
+      const product = await ProductModel.findById(id);
+      return product;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }

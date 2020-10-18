@@ -100,6 +100,9 @@ export class ProductController {
       const authenticator = new Authenticator();
       const token = req.headers.authorization;
 
+      const userDatabase = new UserDatabase();
+      await userDatabase.getConnection();
+
       if (!token) {
         return res.status(401).send('Unauthorized, check token');
       }
@@ -113,32 +116,41 @@ export class ProductController {
             'Unauthorized, only manager has permission to delete products '
           );
       }
-      const id = req.params.id;
+      const productToUpdateId = req.params.id;
 
-      const isObjectIdValid = validateId(id);
+      const isObjectIdValid = validateId(productToUpdateId);
 
       if (!isObjectIdValid) {
         return res.status(400).send('Id is not a valid database Object Id');
       }
 
-      const product = await ProductModel.findById(id).exec();
+      const product = await ProductModel.findById(productToUpdateId).exec();
       if (!product) {
         return res.status(404).send("Product doesn't exist, check id provided");
       }
 
       if (req.body.category) {
         const productBusiness = new ProductBusiness();
-        await productBusiness.updateProductCategory(req.body.category, id);
+        await productBusiness.updateProductCategory(
+          req.body.category,
+          productToUpdateId
+        );
       }
 
       if (req.body.price) {
         const productBusiness = new ProductBusiness();
-        await productBusiness.updateProductPrice(req.body.price, id);
+        await productBusiness.updateProductPrice(
+          req.body.price,
+          productToUpdateId
+        );
       }
 
       if (req.body.name) {
         const productBusiness = new ProductBusiness();
-        await productBusiness.updateProductName(req.body.name, id);
+        await productBusiness.updateProductName(
+          req.body.name,
+          productToUpdateId
+        );
       }
 
       res.status(200).send('Product update sucess');
@@ -233,5 +245,44 @@ export class ProductController {
     } catch (error) {
       res.status(400).send({ error: error.message });
     }
+  }
+
+  async getProductById(req: Request, res: Response) {
+    try {
+      const authenticator = new Authenticator();
+      const token = req.headers.authorization;
+
+      const userDatabase = new UserDatabase();
+      await userDatabase.getConnection();
+
+      const productId = req.params.id;
+
+      if (!token) {
+        return res.status(401).send('Unauthorized, check token');
+      }
+
+      const role = authenticator.getData(token);
+
+      if (role !== UserRole.CLIENT) {
+        return res
+          .status(403)
+          .send('Unauthorized, log as client to check product details ');
+      }
+
+      const isObjectIdValid = validateId(productId);
+
+      if (!isObjectIdValid) {
+        return res.status(400).send('Id is not a valid database Object Id');
+      }
+
+      const productExists = await ProductModel.findById(productId).exec();
+      if (!productExists) {
+        return res.status(404).send("Product doesn't exist, check id provided");
+      }
+
+      const productBusiness = new ProductBusiness();
+      const product = await productBusiness.getProductById(productId);
+      res.status(200).send(product);
+    } catch (error) {}
   }
 }

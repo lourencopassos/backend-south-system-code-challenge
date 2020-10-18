@@ -85,4 +85,13 @@ export class ProductBusiness {
     const product = await productDatabase.getProductByName(name);
     return product;
   }
+
+  async getProductById(id: string) {
+    if (!id) {
+      throw new Error('Check product id');
+    }
+    const productDatabase = new ProductDatabase();
+    const product = await productDatabase.getProductById(id);
+    return product;
+  }
 }
