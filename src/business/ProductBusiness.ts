@@ -79,11 +79,23 @@ export class ProductBusiness {
 
   async updateProductPrice(price: number, id: string) {
     const productDatabase = new ProductDatabase();
+    if (isNaN(price)) {
+      throw new InvalidParameterError('Price and category must be numbers');
+    }
+    if (price <= 0) {
+      throw new InvalidParameterError('Price must be at least 1');
+    }
     await productDatabase.editProductPrice(price, id);
   }
 
   async updateProductQuantity(quantity: number, id: string) {
     const productDatabase = new ProductDatabase();
+    if (isNaN(quantity)) {
+      throw new InvalidParameterError('Price and category must be numbers');
+    }
+    if (quantity < 0) {
+      throw new InvalidParameterError('Quantity can not be negative value');
+    }
     await productDatabase.editProductQuantity(quantity, id);
   }
 
