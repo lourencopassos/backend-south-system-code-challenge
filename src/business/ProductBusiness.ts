@@ -5,30 +5,39 @@ import {
   ProductEditDTO,
   ProductInputDTO,
 } from '../model/Product';
-
+import { InvalidParameterError } from '../errors/InvalidParameterError';
 export class ProductBusiness {
   async createProduct(product: ProductInputDTO) {
     const productDatabase = new ProductDatabase();
 
-    if (
-      !product.name ||
-      !product.category ||
-      !product.price ||
-      product.price < -1
-    ) {
-      throw new Error('Product name,price and category are mandatory fields');
+    if (!product.name || !product.category || !product.price) {
+      throw new InvalidParameterError(
+        'Product name,price and category are mandatory fields'
+      );
+    }
+
+    if (product.quantity < 0) {
+      throw new InvalidParameterError(
+        'Product quantity must over or equal zero'
+      );
+    }
+
+    if (product.price < 0) {
+      throw new InvalidParameterError('Product price must over zero');
     }
 
     if (isNaN(product.price)) {
-      throw new Error('Price and category must be numbers');
+      throw new InvalidParameterError('Price and category must be numbers');
     }
 
     if (isNaN(product.quantity)) {
-      throw new Error('Price and category must be numbers');
+      throw new InvalidParameterError('Price and category must be numbers');
     }
 
     if (product.name.length < 2) {
-      throw new Error('Product name,price and category are mandatory fields');
+      throw new InvalidParameterError(
+        'Product name,price and category are mandatory fields'
+      );
     }
 
     if (
@@ -36,7 +45,7 @@ export class ProductBusiness {
       product.category !== ProductCategory.TOY &&
       product.category !== ProductCategory.APPAREL
     ) {
-      throw new Error(
+      throw new InvalidParameterError(
         'Invalid Product category. Category supported: electronic, toy or apparel'
       );
     }
@@ -55,7 +64,7 @@ export class ProductBusiness {
       category !== ProductCategory.TOY &&
       category !== ProductCategory.APPAREL
     ) {
-      throw new Error(
+      throw new InvalidParameterError(
         'Invalid Product category. Category supported: electronic, toy or apparel'
       );
     }
@@ -92,7 +101,7 @@ export class ProductBusiness {
 
   async getProductByName(name: string, limit: number, skip: number) {
     if (!name) {
-      throw new Error('Check product name');
+      throw new InvalidParameterError('Check product name');
     }
     const productDatabase = new ProductDatabase();
     const product = await productDatabase.getProductByName(name, limit, skip);
@@ -101,7 +110,7 @@ export class ProductBusiness {
 
   async getProductById(id: string) {
     if (!id) {
-      throw new Error('Check product id');
+      throw new InvalidParameterError('Check product id');
     }
     const productDatabase = new ProductDatabase();
     const product = await productDatabase.getProductById(id);
