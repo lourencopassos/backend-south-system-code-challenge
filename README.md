@@ -24,6 +24,7 @@
 - Bcrypt
 - Jest
 - Supertest
+- Heroku
 - Postman para teste da API
 
 ## 📝 Requisitos funcionais
@@ -59,7 +60,7 @@ password: south
 - O token tem duração de 90 minutos.
 - Além de autenticação que verifica se o usuário está logado, no token é passado tipo de perfil (role) conectado. O role dita o tipo de liberação que o usuário terá para executar ações na aplicação.
 
-URL base da API: xxxx
+### 🛒 URL base da API: https://south-store.herokuapp.com/
 
 ### 🔓 Rotas Públicas
 
