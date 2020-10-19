@@ -23,6 +23,7 @@
 - JwtToken
 - Bcrypt
 - Jest
+- Supertest
 - Postman para teste da API
 
 ## 📝 Requisitos funcionais
