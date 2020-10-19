@@ -24,17 +24,16 @@ export class ProductController {
       const token = req.headers.authorization;
 
       if (!token) {
-        return res.status(401).send('Unauthorized, check token');
+        return res.status(401).send({ error: 'Unauthorized check token' });
       }
 
       const role = authenticator.getData(token);
 
       if (role !== UserRole.MANAGER) {
-        return res
-          .status(403)
-          .send(
-            'Unauthorized, only manager has permission to create products '
-          );
+        return res.status(403).send({
+          error:
+            'Unauthorized, only manager has permission to create products ',
+        });
       }
 
       const userDatabase = new UserDatabase();
@@ -59,18 +58,18 @@ export class ProductController {
       const token = req.headers.authorization;
 
       if (!token) {
-        return res.status(401).send('Unauthorized, check token');
+        return res.status(401).send({ error: 'Unauthorized check token' });
       }
 
       const role = authenticator.getData(token);
 
       if (role !== UserRole.MANAGER) {
-        return res
-          .status(403)
-          .send(
-            'Unauthorized, only manager has permission to delete products '
-          );
+        return res.status(403).send({
+          error:
+            'Unauthorized, only manager has permission to delete products ',
+        });
       }
+
       const id = req.params.id;
 
       const userDatabase = new UserDatabase();
@@ -79,12 +78,16 @@ export class ProductController {
       const isObjectIdValid = validateId(id);
 
       if (!isObjectIdValid) {
-        return res.status(400).send('Id is not a valid database Object Id');
+        return res
+          .status(400)
+          .send({ error: 'Id is not a valid database Object Id' });
       }
 
       const product = await ProductModel.findById(id).exec();
       if (!product) {
-        return res.status(404).send("Product doesn't exist, check id provided");
+        return res
+          .status(404)
+          .send({ error: 'Product does not exist, check id provided' });
       }
 
       await ProductModel.deleteOne({ _id: id }).exec();
@@ -110,23 +113,26 @@ export class ProductController {
       const role = authenticator.getData(token);
 
       if (role !== UserRole.MANAGER) {
-        return res
-          .status(403)
-          .send(
-            'Unauthorized, only manager has permission to delete products '
-          );
+        return res.status(403).send({
+          error:
+            'Unauthorized, only manager has permission to update products ',
+        });
       }
       const productToUpdateId = req.params.id;
 
       const isObjectIdValid = validateId(productToUpdateId);
 
       if (!isObjectIdValid) {
-        return res.status(400).send('Id is not a valid database Object Id');
+        return res
+          .status(400)
+          .send({ error: 'Id is not a valid database Object Id' });
       }
 
       const product = await ProductModel.findById(productToUpdateId).exec();
       if (!product) {
-        return res.status(404).send("Product doesn't exist, check id provided");
+        return res
+          .status(404)
+          .send({ error: 'Product does not exist, check id provided' });
       }
 
       if (req.body.category) {
