@@ -14,7 +14,7 @@ app.use(express.json());
 app.use('/user', userRouter);
 app.use('/product', productRouter);
 
-const server = app.listen(process.env.PORT || 3000, () => {
+export const server = app.listen(process.env.PORT || 3000, () => {
   if (server) {
     const address = server.address() as AddressInfo;
     console.log(`Servidor rodando em http://localhost:${address.port}`);

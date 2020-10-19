@@ -1,10 +1,9 @@
 import { ProductBusiness } from '../../src/business/ProductBusiness';
-import { ProductDatabase } from '../../src/data/ProductDatabase';
 import { ProductCategory, ProductInputDTO } from '../../src/model/Product';
 
 describe('Testing product creation in business layer', () => {
   let productDatabase = {
-    createProduct: jest.fn((prodcut: ProductInputDTO) => {}),
+    createProduct: jest.fn((product: ProductInputDTO) => {}),
   };
 
   test("It should return an error, when there's no product name provided", async () => {

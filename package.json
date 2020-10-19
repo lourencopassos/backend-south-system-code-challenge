@@ -4,7 +4,7 @@
   "description": "Template para o projeto LAMA",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --maxWorkers=1 --forceExit",
     "local": "ts-node ./src/index.ts",
     "start": "tsc && node ./build/index.js",
     "build": "tsc"
@@ -20,6 +20,7 @@
     "@types/express": "^4.17.7",
     "@types/jest": "^25.2.3",
     "@types/jsonwebtoken": "^8.5.0",
+    "@types/supertest": "^2.0.10",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -29,6 +30,7 @@
     "knex": "^0.21.2",
     "moment": "^2.27.0",
     "mongoose": "^5.10.9",
+    "supertest": "^5.0.0",
     "ts-jest": "^26.1.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.6"
